@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Creator-Seller Matchmaker | 11.11 Mega Campaign</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        tts: {
+                            cyan: '#00f2fe',
+                            pink: '#ff0050',
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155',
+                            accent: '#2563eb'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+        .tts-gradient-text {
+            background: linear-gradient(135deg, #00f2fe 0%, #ff0050 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .tts-gradient-bg {
+            background: linear-gradient(135deg, #00f2fe 0%, #ff0050 100%);
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+        }
+        .glow-pink {
+            box-shadow: 0 0 15px rgba(255, 0, 80, 0.25);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f2fe;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-12">
+
+    <!-- TOP NAVIGATION & HEADER -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 bg-slate-950/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Brand & Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl tts-gradient-bg flex items-center justify-center shadow-lg glow-pink">
+                        <i class="fa-solid fa-bolt text-black text-xl font-black"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-extrabold text-lg tracking-tight text-white">TikTok Shop</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-tts-cyan border border-tts-cyan/30 font-semibold">11.11 Accelerator</span>
+                        </div>
+                        <p class="text-xs text-slate-400 hidden sm:block">Seller-Creator KPI & Subsidy Matching Hub</p>
+                    </div>
+                </div>
+
+                <!-- Campaign Target Tracker -->
+                <div class="hidden lg:flex items-center space-x-4 bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-800">
+                    <div class="text-right">
+                        <div class="text-xs text-slate-400 flex items-center justify-end space-x-1">
+                            <span>11.11 Target: +50% GMV</span>
+                            <i class="fa-solid fa-circle-info text-slate-500 text-[10px]" title="Campaign KPI Target vs Prior Mega Event"></i>
+                        </div>
+                        <div class="text-sm font-bold text-white flex items-center space-x-2">
+                            <span class="text-emerald-400">฿142.8M</span>
+                            <span class="text-slate-500">/ ฿200M</span>
+                        </div>
+                    </div>
+                    <div class="w-24 bg-slate-800 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                        <div class="bg-gradient-to-r from-tts-cyan to-emerald-400 h-full rounded-full w-[71%] transition-all duration-500"></div>
+                    </div>
+                    <span class="text-xs font-bold text-tts-cyan">71.4%</span>
+                </div>
+
+                <!-- Creator Selector & Profile Badge -->
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <select id="creatorSelector" onchange="switchCreator(this.value)" class="bg-slate-900 text-slate-200 text-xs sm:text-sm font-medium rounded-xl border border-slate-700 px-3 py-2 focus:outline-none focus:border-tts-cyan cursor-pointer transition">
+                            <optgroup label="Top-Tier Creators (>1M Followers)">
+                                <option value="victoria">Victoria Glam (Top - Gold)</option>
+                                <option value="marcus">Marcus Tech World (Top - Silver)</option>
+                                <option value="elena">Elena Lifestyle (Top - Bronze)</option>
+                            </optgroup>
+                            <optgroup label="Mid-Tier Creators (100K - 1M Followers)">
+                                <option value="sarah" selected>Sarah Tech & Beauty (Mid - Gold)</option>
+                                <option value="alex">Alex Gaming & Gadgets (Mid - Silver)</option>
+                                <option value="david">David Fitness & Nutrition (Mid - Bronze)</option>
+                            </optgroup>
+                            <optgroup label="Long-Tail Creators (<100K Followers)">
+                                <option value="nina">Nina Cozy Home (Long - Gold)</option>
+                                <option value="chloe">Chloe Fashion Hub (Long - Silver)</option>
+                                <option value="ben">Ben Kitchen Corner (Long - Bronze)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div id="headerScoreBadge" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Reliability: <span id="headerScoreVal">92</span>/100</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-8 flex-1 w-full">
+
+        <!-- NOTICE BANNER FOR CASE STUDY ALIGNMENT -->
+        <div class="rounded-2xl bg-gradient-to-r from-blue-950/60 via-slate-900 to-pink-950/40 p-4 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="p-2.5 rounded-xl bg-tts-cyan/10 border border-tts-cyan/30 text-tts-cyan">
+                    <i class="fa-solid fa-handshake-angle text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white">11.11 Seller-Creator Subsidy Unlock Program</h3>
+                    <p class="text-xs text-slate-400">Match with Top, Mid, and Long-Tail creators across Gold, Silver, and Bronze sub-tiers to optimize GMV and campaign traffic.</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 shrink-0 text-xs">
+                <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 font-semibold border border-slate-700">
+                    <i class="fa-solid fa-tag text-tts-pink mr-1"></i> Promo Pool: ฿45.2M
+                </span>
+            </div>
+        </div>
+
+        <!-- SECTION 1: CREATOR DASHBOARD & SCORECARD -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Creator Profile & Identity Card -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between space-y-6">
+                <div>
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <img id="creatorAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Creator" class="w-16 h-16 rounded-2xl object-cover border-2 border-tts-cyan">
+                                <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-black text-[10px] font-black px-1.5 py-0.5 rounded-md border border-slate-900">
+                                    <i class="fa-solid fa-check"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <h2 id="creatorName" class="text-lg font-bold text-white">Sarah Tech & Beauty</h2>
+                                    <i class="fa-solid fa-circle-check text-tts-cyan text-sm" title="Verified Creator Identity"></i>
+                                </div>
+                                <p id="creatorHandle" class="text-xs text-slate-400">@sarahtechbeauty</p>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span id="creatorTierCategoryBadge" class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                                        Mid-Tier Creator
+                                    </span>
+                                    <span id="creatorFollowers" class="text-[11px] text-slate-400">450K Followers</span>
+                                </div>
+                                <div id="creatorTags" class="flex flex-wrap gap-1.5 mt-2.5">
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">Beauty</span>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">Electronics</span>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">Fashion</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unlocked Sub-Tier Status -->
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-400 font-medium">Sub-Tier Rank</span>
+                        <span id="tierBadge" class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center space-x-1">
+                            <i class="fa-solid fa-crown text-[10px]"></i>
+                            <span>Gold Rank</span>
+                        </span>
+                    </div>
+
+                    <!-- Progress Bar to Next Tier -->
+                    <div>
+                        <div class="flex justify-between text-[11px] mb-1">
+                            <span class="text-slate-400">Reliability Milestone</span>
+                            <span id="scoreText" class="text-white font-bold">92 / 100 PTS</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="scoreBar" class="bg-gradient-to-r from-tts-cyan to-tts-pink h-full rounded-full transition-all duration-500" style="width: 92%;"></div>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-1">Maintain >85 pts to retain Gold Status & Peak Matching</p>
+                    </div>
+                </div>
+
+                <!-- Active Benefits -->
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2.5 rounded-xl bg-slate-900/50 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 block">Base Subsidy</span>
+                        <span id="benefitSubsidy" class="text-sm font-extrabold text-tts-cyan">+35%</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/50 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 block">Traffic Boost</span>
+                        <span id="benefitVoucher" class="text-sm font-extrabold text-tts-pink">2.5x</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/50 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 block">Priority Match</span>
+                        <span id="benefitMatch" class="text-sm font-extrabold text-emerald-400">Top Tier</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Reliability & KPI Scorecard -->
+            <div class="glass-panel rounded-2xl p-6 lg:col-span-2 flex flex-col justify-between space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center space-x-2">
+                            <span>Dynamic Reliability Scorecard</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-tts-cyan/10 text-tts-cyan font-bold">Verified Metrics</span>
+                        </h3>
+                        <p class="text-xs text-slate-400">KPI performance calculated over the last 30 live campaign streams</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-black text-white" id="overallScoreDisplay">92</span>
+                        <span class="text-xs text-slate-500">/100 Overall Score</span>
+                    </div>
+                </div>
+
+                <!-- KPI Metric Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    
+                    <!-- KPI 1: On-Time Stream Rate -->
+                    <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-slate-400 font-medium">On-Time Stream Rate</span>
+                            <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline space-x-2">
+                            <span id="kpiPunctuality" class="text-xl font-bold text-white">96%</span>
+                            <span id="kpiPunctualitySub" class="text-[10px] text-emerald-400 font-semibold"><i class="fa-solid fa-arrow-up"></i> High</span>
+                        </div>
+                        <div class="mt-2 text-[11px] text-slate-500">Live start punctuality track</div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div id="kpiPunctualityBar" class="bg-emerald-400 h-full rounded-full" style="width: 96%"></div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 2: Content Quality Score -->
+                    <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-slate-400 font-medium">Content Quality Score</span>
+                            <div class="w-7 h-7 rounded-lg bg-tts-cyan/10 text-tts-cyan flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline space-x-2">
+                            <span id="kpiQuality" class="text-xl font-bold text-white">8.8 / 10</span>
+                            <span id="kpiQualitySub" class="text-[10px] text-tts-cyan font-semibold"><i class="fa-solid fa-circle-check"></i> High</span>
+                        </div>
+                        <div class="mt-2 text-[11px] text-slate-500">Audio/Lighting/Studio setup</div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div id="kpiQualityBar" class="bg-tts-cyan h-full rounded-full" style="width: 88%"></div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3: Order Fulfillment Rate -->
+                    <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-slate-400 font-medium">Conversion Rate</span>
+                            <div class="w-7 h-7 rounded-lg bg-tts-pink/10 text-tts-pink flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline space-x-2">
+                            <span id="kpiConversion" class="text-xl font-bold text-white">4.2%</span>
+                            <span id="kpiConversionSub" class="text-[10px] text-tts-pink font-semibold"><i class="fa-solid fa-fire"></i> Solid</span>
+                        </div>
+                        <div class="mt-2 text-[11px] text-slate-500">Live viewer conversion rate</div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div id="kpiConversionBar" class="bg-tts-pink h-full rounded-full" style="width: 84%"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Incentive Sub-Tier Progression Diagram -->
+                <div class="p-3 rounded-xl bg-slate-900/30 border border-slate-800/60 flex items-center justify-between text-xs overflow-x-auto gap-2">
+                    <div class="flex items-center space-x-2 min-w-fit">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-700"></span>
+                        <span class="text-slate-400">Bronze Sub-Tier (&lt;65 pts)</span>
+                        <span class="text-slate-500">→ Base Subsidy</span>
+                    </div>
+                    <div class="flex items-center space-x-2 min-w-fit">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                        <span class="text-slate-300">Silver Sub-Tier (65-85 pts)</span>
+                        <span class="text-slate-400">→ Moderate Subsidy</span>
+                    </div>
+                    <div class="flex items-center space-x-2 min-w-fit font-bold">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                        <span class="text-amber-400">Gold Sub-Tier (&gt;85 pts)</span>
+                        <span class="text-tts-cyan">→ Premium Subsidy & Priority Slots</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SECTION 2: INTERACTIVE KPI & SUBSIDY SIMULATOR -->
+        <section class="glass-panel rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-tts-cyan/5 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-4 mb-6 gap-2">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-tts-cyan"></i>
+                        <span>Live KPI & Subsidy Unlock Simulator</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Adjust performance variables to simulate rank shifts between Gold, Silver, and Bronze tiers.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="resetSimulator()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Reset Baseline
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Controls Side (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <!-- Slider 1: On-Time Stream Rate -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="font-semibold text-slate-200 flex items-center space-x-1">
+                                <span>Punctuality / On-Time Completion Rate</span>
+                                <i class="fa-solid fa-circle-question text-slate-500" title="Maintains livestream scheduling reliability."></i>
+                            </label>
+                            <span id="sliderPunctualityVal" class="font-mono font-bold text-tts-cyan text-sm">95%</span>
+                        </div>
+                        <input type="range" id="sliderPunctuality" min="30" max="100" value="95" oninput="updateSimulation()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-tts-cyan">
+                        <div class="flex justify-between text-[10px] text-slate-500">
+                            <span>30% (Low)</span>
+                            <span>65% (Avg)</span>
+                            <span>100% (Perfect)</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 2: Content Quality Score -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="font-semibold text-slate-200">Content Quality & Production Score</label>
+                            <span id="sliderQualityVal" class="font-mono font-bold text-tts-pink text-sm">8.5 / 10</span>
+                        </div>
+                        <input type="range" id="sliderQuality" min="1" max="10" step="0.1" value="8.5" oninput="updateSimulation()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-tts-pink">
+                        <div class="flex justify-between text-[10px] text-slate-500">
+                            <span>1.0 (Low setup)</span>
+                            <span>7.0 (Baseline)</span>
+                            <span>10.0 (Studio Quality)</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 3: Slot Volume Commitment -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="font-semibold text-slate-200">11.11 Stream Slot Volume Commitment</label>
+                            <span id="sliderSlotsVal" class="font-mono font-bold text-emerald-400 text-sm">6 Slots</span>
+                        </div>
+                        <input type="range" id="sliderSlots" min="1" max="12" value="6" oninput="updateSimulation()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400">
+                        <div class="flex justify-between text-[10px] text-slate-500">
+                            <span>1 Slot</span>
+                            <span>6 Slots</span>
+                            <span>12 Slots</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Live Simulation Output Side (5 cols) -->
+                <div class="lg:col-span-5 bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-4">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-2">Simulated Sub-Tier & Benefits</h4>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-slate-300">Simulated Sub-Tier</span>
+                            <span id="simTierRank" class="text-sm font-extrabold px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Gold Rank</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-slate-300">Unlocked Platform Subsidy %</span>
+                            <span id="simSubsidyRate" class="text-lg font-black text-tts-cyan">32.5%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-slate-300">Traffic Voucher Multiplier</span>
+                            <span id="simVoucherMult" class="text-lg font-black text-tts-pink">2.8x</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-slate-300">Est. Total Campaign GMV Boost</span>
+                            <span id="simGmvEst" class="text-lg font-black text-emerald-400">฿1,850,000</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-slate-800/60 text-[11px] text-slate-300 space-y-1">
+                        <div class="flex items-center space-x-1 text-tts-cyan font-semibold">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="simStatusHeadline">High Subsidy Tier Unlocked</span>
+                        </div>
+                        <p id="simStatusDesc" class="text-slate-400">By maintaining high punctuality, you qualify for top-up seller matching subsidies co-funded by TTS 11.11 Fund.</p>
+                    </div>
+
+                    <button onclick="applySimulatedToSlots()" class="w-full py-2.5 rounded-xl tts-gradient-bg text-black font-extrabold text-xs shadow-lg hover:opacity-90 transition">
+                        Lock in KPI Target & Search Matching Sellers
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: SELLER-CREATOR MATCHING MARKETPLACE -->
+        <section class="space-y-6">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-extrabold text-white flex items-center space-x-2">
+                        <span>SMB & Brand Seller Marketplace</span>
+                        <span class="px-2.5 py-0.5 rounded-full bg-tts-pink/10 text-tts-pink border border-tts-pink/30 text-xs font-bold">Unallocated Budget Pool</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Match with SMB and mid-tier sellers looking for Top, Mid, and Long-Tail creators across sub-tiers.</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <select id="filterCategory" onchange="filterSellers()" class="bg-slate-900 text-xs text-slate-300 rounded-xl border border-slate-800 px-3 py-2 focus:outline-none focus:border-tts-cyan">
+                        <option value="all">All Categories</option>
+                        <option value="Beauty">Beauty & Skincare</option>
+                        <option value="Electronics">Electronics & Tech</option>
+                        <option value="Fashion">Fashion & Apparel</option>
+                        <option value="Home">Home & Living</option>
+                    </select>
+
+                    <select id="filterDiscount" onchange="filterSellers()" class="bg-slate-900 text-xs text-slate-300 rounded-xl border border-slate-800 px-3 py-2 focus:outline-none focus:border-tts-cyan">
+                        <option value="all">All Discount Depths</option>
+                        <option value="deep">Deep Discount (&gt;30%)</option>
+                        <option value="moderate">Moderate Discount (15-30%)</option>
+                    </select>
+
+                    <input type="text" id="searchSeller" onkeyup="filterSellers()" placeholder="Search brands or products..." class="bg-slate-900 text-xs text-slate-300 rounded-xl border border-slate-800 px-3 py-2 focus:outline-none focus:border-tts-cyan w-40 sm:w-48">
+                </div>
+            </div>
+
+            <!-- Seller Grid -->
+            <div id="sellerGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Javascript rendering populates sellers here -->
+            </div>
+
+        </section>
+
+        <!-- SECTION 4: SLOT BUNDLING & CAMPAIGN MATCH MATRIX -->
+        <section class="glass-panel rounded-2xl p-6 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-4 gap-2">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-calendar-check text-tts-pink"></i>
+                        <span>11.11 Livestream Slot Bundles & Guarantee Matrix</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Lock in peak campaign timeslots with matched sellers to guarantee product subsidies & traffic vouchers.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs text-slate-400">Selected Slots: <strong id="selectedSlotCount" class="text-tts-cyan">0</strong></span>
+                    <button onclick="clearSelectedSlots()" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">Clear All</button>
+                </div>
+            </div>
+
+            <!-- Timeslot Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="slotMatrixGrid">
+                <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Bundle Summary Footer -->
+            <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400">Total Bundle Est. GMV Potential</div>
+                        <div class="text-lg font-black text-white" id="bundleGmvTotal">฿0</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-6 text-right">
+                    <div>
+                        <div class="text-xs text-slate-400">Unlocked Platform Subsidy</div>
+                        <div class="text-sm font-extrabold text-tts-cyan" id="bundleSubsidyTotal">฿0 (0%)</div>
+                    </div>
+                    <button onclick="confirmSlotBooking()" id="btnConfirmBundle" disabled class="px-6 py-2.5 rounded-xl bg-slate-800 text-slate-500 font-bold text-xs transition cursor-not-allowed">
+                        Confirm & Lock Bundled Slots
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 text-center text-xs text-slate-500">
+        <p>TikTok Shop Southeast Asia Regional Hub • 11.11 Mega Campaign Strategy Prototype</p>
+        <p class="mt-1 text-[11px] text-slate-600">Designed for Creator Tiers (Top, Mid, Long) & Sub-Tiers (Gold, Silver, Bronze) Matrix.</p>
+    </footer>
+
+    <!-- MODAL: MATCH SELLER TO SLOT -->
+    <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel rounded-2xl max-w-lg w-full p-6 border border-slate-800 space-y-5">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center space-x-2">
+                    <i class="fa-solid fa-link text-tts-cyan"></i>
+                    <span>Match Seller Product to Slot</span>
+                </h3>
+                <button onclick="closeMatchModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div>
+                <p class="text-xs text-slate-400 mb-1">Target Livestream Slot:</p>
+                <div id="modalSlotTitle" class="text-sm font-bold text-tts-cyan bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                    Nov 11 • Peak Evening (20:00 - 22:00)
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <label class="text-xs font-semibold text-slate-300">Select Matched Seller & Campaign Mechanism:</label>
+                <div id="modalSellerList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-2 pt-2 border-t border-slate-800">
+                <button onclick="closeMatchModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700">Cancel</button>
+                <button onclick="saveSlotMatch()" class="px-4 py-2 rounded-xl tts-gradient-bg text-black text-xs font-bold hover:opacity-90">Confirm Match</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // MOCK DATA: CREATOR PROFILES (EXPANDED TO TOP, MID, LONG-TAIL WITH GOLD/SILVER/BRONZE)
+        const creatorProfiles = {
+            // TOP TIER (>1M Followers)
+            victoria: {
+                name: "Victoria Glam",
+                handle: "@victoriaglam",
+                tierCategory: "Top-Tier",
+                subTier: "Gold Rank",
+                followers: "2.4M",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+                tags: ["Luxury Beauty", "High Fashion", "Skincare"],
+                overallScore: 97,
+                punctuality: 98,
+                quality: 9.6,
+                conversion: 6.8,
+                tierColor: "amber",
+                subsidyBoost: "+45%",
+                voucherMult: "3.5x",
+                matchTier: "VIP Mega Tier"
+            },
+            marcus: {
+                name: "Marcus Tech World",
+                handle: "@marcustech",
+                tierCategory: "Top-Tier",
+                subTier: "Silver Rank",
+                followers: "1.8M",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+                tags: ["Electronics", "Smart Home", "Gadgets"],
+                overallScore: 82,
+                punctuality: 84,
+                quality: 8.5,
+                conversion: 5.1,
+                tierColor: "slate",
+                subsidyBoost: "+30%",
+                voucherMult: "2.8x",
+                matchTier: "High Tier"
+            },
+            elena: {
+                name: "Elena Lifestyle",
+                handle: "@elenalife",
+                tierCategory: "Top-Tier",
+                subTier: "Bronze Rank",
+                followers: "1.2M",
+                avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
+                tags: ["Home & Living", "Fashion", "Wellness"],
+                overallScore: 62,
+                punctuality: 60,
+                quality: 7.2,
+                conversion: 3.8,
+                tierColor: "amber-800",
+                subsidyBoost: "+18%",
+                voucherMult: "1.8x",
+                matchTier: "Standard Top"
+            },
+
+            // MID TIER (100K - 1M Followers)
+            sarah: {
+                name: "Sarah Tech & Beauty",
+                handle: "@sarahtechbeauty",
+                tierCategory: "Mid-Tier",
+                subTier: "Gold Rank",
+                followers: "450K",
+                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+                tags: ["Beauty", "Electronics", "Fashion"],
+                overallScore: 92,
+                punctuality: 96,
+                quality: 8.8,
+                conversion: 4.2,
+                tierColor: "amber",
+                subsidyBoost: "+35%",
+                voucherMult: "2.5x",
+                matchTier: "Top Mid Tier"
+            },
+            alex: {
+                name: "Alex Gaming & Gadgets",
+                handle: "@alexgadgets",
+                tierCategory: "Mid-Tier",
+                subTier: "Silver Rank",
+                followers: "310K",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+                tags: ["Electronics", "Gaming", "Home"],
+                overallScore: 78,
+                punctuality: 82,
+                quality: 7.5,
+                conversion: 3.1,
+                tierColor: "slate",
+                subsidyBoost: "+20%",
+                voucherMult: "1.8x",
+                matchTier: "Mid Tier"
+            },
+            david: {
+                name: "David Fitness & Nutrition",
+                handle: "@davidfit",
+                tierCategory: "Mid-Tier",
+                subTier: "Bronze Rank",
+                followers: "180K",
+                avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80",
+                tags: ["Health", "Fitness", "Supplements"],
+                overallScore: 58,
+                punctuality: 55,
+                quality: 6.4,
+                conversion: 2.2,
+                tierColor: "amber-800",
+                subsidyBoost: "+12%",
+                voucherMult: "1.2x",
+                matchTier: "Standard Mid"
+            },
+
+            // LONG-TAIL CREATORS (<100K Followers)
+            nina: {
+                name: "Nina Cozy Home",
+                handle: "@ninacozy",
+                tierCategory: "Long-Tail",
+                subTier: "Gold Rank",
+                followers: "85K",
+                avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80",
+                tags: ["Home Decor", "DIY", "Kitchen"],
+                overallScore: 89,
+                punctuality: 92,
+                quality: 8.4,
+                conversion: 4.8,
+                tierColor: "amber",
+                subsidyBoost: "+25%",
+                voucherMult: "2.0x",
+                matchTier: "High Niche"
+            },
+            chloe: {
+                name: "Chloe Fashion Hub",
+                handle: "@chloefashion",
+                tierCategory: "Long-Tail",
+                subTier: "Silver Rank",
+                followers: "42K",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+                tags: ["Streetwear", "Fashion", "Thrift"],
+                overallScore: 71,
+                punctuality: 74,
+                quality: 7.0,
+                conversion: 2.8,
+                tierColor: "slate",
+                subsidyBoost: "+15%",
+                voucherMult: "1.4x",
+                matchTier: "Niche Growth"
+            },
+            ben: {
+                name: "Ben Kitchen Corner",
+                handle: "@benkitchen",
+                tierCategory: "Long-Tail",
+                subTier: "Bronze Rank",
+                followers: "18K",
+                avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80",
+                tags: ["Cooking", "Gadgets", "Food"],
+                overallScore: 52,
+                punctuality: 50,
+                quality: 5.6,
+                conversion: 1.8,
+                tierColor: "amber-800",
+                subsidyBoost: "+8%",
+                voucherMult: "1.0x",
+                matchTier: "Emerging"
+            }
+        };
+
+        // MOCK DATA: SELLERS
+        const sellersData = [
+            {
+                id: 1,
+                name: "GlowAura Cosmetics",
+                category: "Beauty",
+                badge: "Mid-Tier SMB",
+                unallocatedBudget: "฿450,000",
+                gmvTarget: "฿1,500,000",
+                discountDepth: "35% Exclusive Off",
+                discountType: "deep",
+                description: "Organic serums & skincare bundles. Unallocated budget available for Top & Mid creators across Gold/Silver ranks.",
+                commissionRate: "18%"
+            },
+            {
+                id: 2,
+                name: "AeroSound Tech",
+                category: "Electronics",
+                badge: "High Growth SMB",
+                unallocatedBudget: "฿820,000",
+                gmvTarget: "฿2,800,000",
+                discountDepth: "28% Off + Free Case",
+                discountType: "moderate",
+                description: "Wireless ANC Earbuds & Smartwatches. Seeking creators with >8.0 Quality Score.",
+                commissionRate: "15%"
+            },
+            {
+                id: 3,
+                name: "VogueVibe Apparel",
+                category: "Fashion",
+                badge: "Top SMB Choice",
+                unallocatedBudget: "฿310,000",
+                gmvTarget: "฿950,000",
+                discountDepth: "40% Mega Flash",
+                discountType: "deep",
+                description: "Streetwear & autumn jackets. High conversion rates during 20:00 - 00:00 peak hours.",
+                commissionRate: "20%"
+            },
+            {
+                id: 4,
+                name: "EcoHome Appliances",
+                category: "Home",
+                badge: "Mid-Tier Seller",
+                unallocatedBudget: "฿500,000",
+                gmvTarget: "฿1,800,000",
+                discountDepth: "20% Co-Funded",
+                discountType: "moderate",
+                description: "Smart air purifiers & robotic vacuums. Fully co-funded product vouchers ready for Long-Tail & Mid creators.",
+                commissionRate: "12%"
+            },
+            {
+                id: 5,
+                name: "LuxeSkin Labs",
+                category: "Beauty",
+                badge: "Verified Brand",
+                unallocatedBudget: "฿650,000",
+                gmvTarget: "฿2,200,000",
+                discountDepth: "30% Coupon Bundle",
+                discountType: "deep",
+                description: "Anti-aging skincare creams. Willing to grant exclusive live giveaways.",
+                commissionRate: "17%"
+            },
+            {
+                id: 6,
+                name: "FlexFit Gear",
+                category: "Fashion",
+                badge: "Emerging Brand",
+                unallocatedBudget: "฿280,000",
+                gmvTarget: "฿800,000",
+                discountDepth: "25% Bundle",
+                discountType: "moderate",
+                description: "Activewear & gym apparel. Fast shipping guarantee for campaign orders.",
+                commissionRate: "16%"
+            }
+        ];
+
+        // MOCK DATA: LIVESTREAM SLOTS
+        let slotMatrix = [
+            { id: 's1', time: 'Nov 10 • Warm-up 18:00 - 20:00', estGmv: 250000, peakMultiplier: 1.1, matchedSellerId: null },
+            { id: 's2', time: 'Nov 10 • Pre-Peak 21:00 - 23:00', estGmv: 450000, peakMultiplier: 1.3, matchedSellerId: 1 },
+            { id: 's3', time: 'Nov 11 • Mega Kickoff 00:00 - 02:00', estGmv: 850000, peakMultiplier: 1.8, matchedSellerId: 2 },
+            { id: 's4', time: 'Nov 11 • Afternoon 14:00 - 16:00', estGmv: 350000, peakMultiplier: 1.2, matchedSellerId: null },
+            { id: 's5', time: 'Nov 11 • Prime Peak 20:00 - 22:00', estGmv: 1200000, peakMultiplier: 2.0, matchedSellerId: 3 },
+            { id: 's6', time: 'Nov 11 • Final Countdown 22:00 - 00:00', estGmv: 950000, peakMultiplier: 1.7, matchedSellerId: null },
+        ];
+
+        let activeCreatorKey = 'sarah';
+        let currentActiveSlotForMatch = null;
+
+        // INITIALIZATION
+        window.onload = function() {
+            renderCreatorDashboard(activeCreatorKey);
+            renderSellers(sellersData);
+            renderSlotMatrix();
+            updateSimulation();
+        };
+
+        // SWITCH CREATOR FUNCTION
+        function switchCreator(key) {
+            activeCreatorKey = key;
+            renderCreatorDashboard(key);
+            // Sync simulator sliders to profile
+            const profile = creatorProfiles[key];
+            document.getElementById('sliderPunctuality').value = profile.punctuality;
+            document.getElementById('sliderQuality').value = profile.quality;
+            updateSimulation();
+        }
+
+        function renderCreatorDashboard(key) {
+            const c = creatorProfiles[key];
+            document.getElementById('creatorName').innerText = c.name;
+            document.getElementById('creatorHandle').innerText = `${c.handle}`;
+            document.getElementById('creatorTierCategoryBadge').innerText = `${c.tierCategory}`;
+            document.getElementById('creatorFollowers').innerText = `${c.followers} Followers`;
+            document.getElementById('creatorAvatar').src = c.avatar;
+            document.getElementById('headerScoreVal').innerText = c.overallScore;
+            document.getElementById('overallScoreDisplay').innerText = c.overallScore;
+            document.getElementById('scoreText').innerText = `${c.overallScore} / 100 PTS`;
+            document.getElementById('scoreBar').style.width = `${c.overallScore}%`;
+
+            // KPI Indicators
+            document.getElementById('kpiPunctuality').innerText = `${c.punctuality}%`;
+            document.getElementById('kpiPunctualityBar').style.width = `${c.punctuality}%`;
+            document.getElementById('kpiPunctualitySub').innerHTML = c.punctuality >= 85 ? `<i class="fa-solid fa-arrow-up"></i> High` : `<i class="fa-solid fa-arrow-down"></i> Mod`;
+
+            document.getElementById('kpiQuality').innerText = `${c.quality} / 10`;
+            document.getElementById('kpiQualityBar').style.width = `${c.quality * 10}%`;
+
+            document.getElementById('kpiConversion').innerText = `${c.conversion}%`;
+            document.getElementById('kpiConversionBar').style.width = `${Math.min(100, c.conversion * 15)}%`;
+
+            // Sub-Tier & Badges
+            let badgeStyle = "bg-amber-500/10 text-amber-400 border-amber-500/30";
+            if (c.subTier.includes("Silver")) {
+                badgeStyle = "bg-slate-300/10 text-slate-300 border-slate-400/30";
+            } else if (c.subTier.includes("Bronze")) {
+                badgeStyle = "bg-amber-800/20 text-amber-600 border-amber-800/40";
+            }
+
+            document.getElementById('tierBadge').className = `px-2.5 py-1 rounded-full text-xs font-extrabold border flex items-center space-x-1 ${badgeStyle}`;
+            document.getElementById('tierBadge').innerHTML = `<i class="fa-solid fa-crown text-[10px]"></i> <span>${c.subTier}</span>`;
+            
+            document.getElementById('benefitSubsidy').innerText = c.subsidyBoost;
+            document.getElementById('benefitVoucher').innerText = c.voucherMult;
+            document.getElementById('benefitMatch').innerText = c.matchTier;
+
+            // Render Tags
+            const tagsContainer = document.getElementById('creatorTags');
+            tagsContainer.innerHTML = c.tags.map(t => `<span class="px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">${t}</span>`).join('');
+        }
+
+        // RENDER SELLERS MARKETPLACE
+        function renderSellers(items) {
+            const grid = document.getElementById('sellerGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 text-sm">No sellers match your filter criteria.</div>`;
+                return;
+            }
+
+            items.forEach(s => {
+                const card = document.createElement('div');
+                card.className = "glass-panel rounded-2xl p-5 border border-slate-800 hover:border-tts-cyan/40 transition flex flex-col justify-between space-y-4 group";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-tts-cyan/10 text-tts-cyan border border-tts-cyan/30">${s.badge}</span>
+                                <h4 class="text-base font-bold text-white mt-1 group-hover:text-tts-cyan transition">${s.name}</h4>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-layer-group text-[10px] mr-1"></i>${s.category}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs text-slate-400 block">Unallocated Promo</span>
+                                <span class="text-sm font-extrabold text-emerald-400">${s.unallocatedBudget}</span>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-300 line-clamp-2">${s.description}</p>
+
+                        <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800/80 grid grid-cols-2 gap-2 text-xs">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block">Product Discount</span>
+                                <span class="font-bold text-tts-pink">${s.discountDepth}</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-slate-400 block">Creator Comm. Rate</span>
+                                <span class="font-bold text-white">${s.commissionRate}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-[11px] text-slate-400">GMV Target: <strong class="text-slate-200">${s.gmvTarget}</strong></span>
+                        <button onclick="quickMatchSeller(${s.id})" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-tts-cyan hover:text-black text-slate-200 text-xs font-bold transition flex items-center space-x-1">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                            <span>Bundle Slot</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // FILTER SELLERS LOGIC
+        function filterSellers() {
+            const cat = document.getElementById('filterCategory').value;
+            const disc = document.getElementById('filterDiscount').value;
+            const query = document.getElementById('searchSeller').value.toLowerCase();
+
+            const filtered = sellersData.filter(s => {
+                const matchCat = (cat === 'all') || (s.category === cat);
+                const matchDisc = (disc === 'all') || (s.discountType === disc);
+                const matchQuery = (s.name.toLowerCase().includes(query)) || (s.description.toLowerCase().includes(query));
+                return matchCat && matchDisc && matchQuery;
+            });
+
+            renderSellers(filtered);
+        }
+
+        // SIMULATION CALCULATOR LOGIC
+        function updateSimulation() {
+            const pVal = parseInt(document.getElementById('sliderPunctuality').value);
+            const qVal = parseFloat(document.getElementById('sliderQuality').value);
+            const slotsVal = parseInt(document.getElementById('sliderSlots').value);
+
+            document.getElementById('sliderPunctualityVal').innerText = `${pVal}%`;
+            document.getElementById('sliderQualityVal').innerText = `${qVal.toFixed(1)} / 10`;
+            document.getElementById('sliderSlotsVal').innerText = `${slotsVal} Slot${slotsVal > 1 ? 's' : ''}`;
+
+            // Calculation algorithm for dynamic score & sub-tier
+            let baseScore = Math.round((pVal * 0.5) + (qVal * 5)); // Max 100
+            let subsidyPercent = Math.min(45, Math.max(5, (baseScore * 0.4))).toFixed(1);
+            let voucherMultiplier = (1.0 + (baseScore / 100) * 2.5).toFixed(1);
+            let estGmv = Math.round((slotsVal * 280000) * (baseScore / 75));
+
+            document.getElementById('simSubsidyRate').innerText = `${subsidyPercent}%`;
+            document.getElementById('simVoucherMult').innerText = `${voucherMultiplier}x`;
+            document.getElementById('simGmvEst').innerText = `฿${estGmv.toLocaleString()}`;
+
+            const rankBadge = document.getElementById('simTierRank');
+            const headline = document.getElementById('simStatusHeadline');
+            const desc = document.getElementById('simStatusDesc');
+
+            if (baseScore >= 85) {
+                rankBadge.innerText = "Gold Sub-Tier";
+                rankBadge.className = "text-xs font-extrabold px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                headline.innerText = "Gold Sub-Tier Unlocked";
+                headline.className = "text-emerald-400 font-semibold";
+                desc.innerText = "Maximum platform co-funding unlocked. Sellers prioritize your slots for peak 11.11 campaign hours.";
+            } else if (baseScore >= 65) {
+                rankBadge.innerText = "Silver Sub-Tier";
+                rankBadge.className = "text-xs font-extrabold px-2.5 py-0.5 rounded bg-slate-300/20 text-slate-300 border border-slate-400/30";
+                headline.innerText = "Silver Sub-Tier Unlocked";
+                headline.className = "text-tts-cyan font-semibold";
+                desc.innerText = "Good performance. Boost punctuality to >85% to unlock Gold Sub-Tier product discount subsidies.";
+            } else {
+                rankBadge.innerText = "Bronze Sub-Tier";
+                rankBadge.className = "text-xs font-extrabold px-2.5 py-0.5 rounded bg-amber-800/20 text-amber-600 border border-amber-800/30";
+                headline.innerText = "Bronze Sub-Tier";
+                headline.className = "text-amber-500 font-semibold";
+                desc.innerText = "Low punctuality risk detected. Improve live stream completion rate to climb up to Silver and Gold ranks.";
+            }
+        }
+
+        function resetSimulator() {
+            const profile = creatorProfiles[activeCreatorKey];
+            document.getElementById('sliderPunctuality').value = profile.punctuality;
+            document.getElementById('sliderQuality').value = profile.quality;
+            document.getElementById('sliderSlots').value = 6;
+            updateSimulation();
+        }
+
+        function applySimulatedToSlots() {
+            alert('KPI Targets applied! Scroll down to bundle your available slots with matching sellers.');
+        }
+
+        // SLOT MATRIX RENDER & BUNDLING LOGIC
+        function renderSlotMatrix() {
+            const grid = document.getElementById('slotMatrixGrid');
+            grid.innerHTML = '';
+
+            let totalSelectedGmv = 0;
+            let selectedCount = 0;
+
+            slotMatrix.forEach(slot => {
+                const matchedSeller = sellersData.find(s => s.id === slot.matchedSellerId);
+                if (matchedSeller) {
+                    totalSelectedGmv += slot.estGmv;
+                    selectedCount++;
+                }
+
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border transition flex flex-col justify-between space-y-3 ${
+                    matchedSeller 
+                    ? 'bg-slate-900 border-tts-cyan/60 shadow-lg glow-cyan' 
+                    : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'
+                }`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center text-xs mb-1">
+                            <span class="font-bold text-slate-200">${slot.time}</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-tts-pink font-semibold">${slot.peakMultiplier}x Peak</span>
+                        </div>
+                        <div class="text-xs text-slate-400">Est. Base GMV: <strong class="text-slate-200">฿${slot.estGmv.toLocaleString()}</strong></div>
+                    </div>
+
+                    ${matchedSeller ? `
+                        <div class="p-2.5 rounded-lg bg-tts-cyan/10 border border-tts-cyan/30 text-xs">
+                            <div class="flex items-center justify-between text-tts-cyan font-bold">
+                                <span>${matchedSeller.name}</span>
+                                <i class="fa-solid fa-circle-check text-[10px]"></i>
+                            </div>
+                            <div class="text-[10px] text-slate-300 mt-0.5">${matchedSeller.discountDepth}</div>
+                        </div>
+                    ` : `
+                        <div class="p-2.5 rounded-lg bg-slate-800/50 border border-dashed border-slate-700 text-center text-xs text-slate-500">
+                            Unmatched Slot
+                        </div>
+                    `}
+
+                    <div class="flex items-center space-x-2 pt-1">
+                        ${matchedSeller ? `
+                            <button onclick="openMatchModal('${slot.id}')" class="w-full py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Change Match</button>
+                            <button onclick="removeMatch('${slot.id}')" class="p-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        ` : `
+                            <button onclick="openMatchModal('${slot.id}')" class="w-full py-1.5 rounded-lg bg-tts-cyan/10 hover:bg-tts-cyan hover:text-black text-tts-cyan text-xs font-bold transition">Match Seller</button>
+                        `}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            // Update Summary
+            document.getElementById('selectedSlotCount').innerText = selectedCount;
+            document.getElementById('bundleGmvTotal').innerText = `฿${totalSelectedGmv.toLocaleString()}`;
+            
+            const subsidyAmount = Math.round(totalSelectedGmv * 0.32);
+            document.getElementById('bundleSubsidyTotal').innerText = `฿${subsidyAmount.toLocaleString()} (32% Co-Funded)`;
+
+            const btnConfirm = document.getElementById('btnConfirmBundle');
+            if (selectedCount > 0) {
+                btnConfirm.disabled = false;
+                btnConfirm.className = "px-6 py-2.5 rounded-xl tts-gradient-bg text-black font-extrabold text-xs shadow-lg hover:opacity-90 transition cursor-pointer";
+            } else {
+                btnConfirm.disabled = true;
+                btnConfirm.className = "px-6 py-2.5 rounded-xl bg-slate-800 text-slate-500 font-bold text-xs transition cursor-not-allowed";
+            }
+        }
+
+        // QUICK MATCH FROM MARKETPLACE
+        function quickMatchSeller(sellerId) {
+            const emptySlot = slotMatrix.find(s => s.matchedSellerId === null);
+            if (emptySlot) {
+                emptySlot.matchedSellerId = sellerId;
+                renderSlotMatrix();
+            } else {
+                alert('All slots are currently matched! You can change existing matches in the slot matrix below.');
+            }
+        }
+
+        function removeMatch(slotId) {
+            const target = slotMatrix.find(s => s.id === slotId);
+            if (target) {
+                target.matchedSellerId = null;
+                renderSlotMatrix();
+            }
+        }
+
+        function clearSelectedSlots() {
+            slotMatrix.forEach(s => s.matchedSellerId = null);
+            renderSlotMatrix();
+        }
+
+        // MODAL HANDLERS
+        function openMatchModal(slotId) {
+            currentActiveSlotForMatch = slotId;
+            const slot = slotMatrix.find(s => s.id === slotId);
+            document.getElementById('modalSlotTitle').innerText = `${slot.time} (Est. ฿${slot.estGmv.toLocaleString()})`;
+
+            const listContainer = document.getElementById('modalSellerList');
+            listContainer.innerHTML = '';
+
+            sellersData.forEach(seller => {
+                const isChecked = slot.matchedSellerId === seller.id;
+                const item = document.createElement('label');
+                item.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer transition ${isChecked ? 'bg-tts-cyan/10 border-tts-cyan' : 'bg-slate-900 border-slate-800 hover:border-slate-700'}`;
+                item.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" name="modalSellerRadio" value="${seller.id}" ${isChecked ? 'checked' : ''} class="accent-tts-cyan">
+                        <div>
+                            <div class="text-xs font-bold text-white">${seller.name} <span class="text-[10px] text-slate-400 font-normal">(${seller.category})</span></div>
+                            <div class="text-[10px] text-tts-pink font-semibold">${seller.discountDepth} • Promo Budget: ${seller.unallocatedBudget}</div>
+                        </div>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+
+            document.getElementById('matchModal').classList.remove('hidden');
+        }
+
+        function closeMatchModal() {
+            document.getElementById('matchModal').classList.add('hidden');
+            currentActiveSlotForMatch = null;
+        }
+
+        function saveSlotMatch() {
+            const selectedRadio = document.querySelector('input[name="modalSellerRadio"]:checked');
+            if (selectedRadio && currentActiveSlotForMatch) {
+                const sellerId = parseInt(selectedRadio.value);
+                const slot = slotMatrix.find(s => s.id === currentActiveSlotForMatch);
+                if (slot) {
+                    slot.matchedSellerId = sellerId;
+                    renderSlotMatrix();
+                }
+            }
+            closeMatchModal();
+        }
+
+        function confirmSlotBooking() {
+            const matchedSlots = slotMatrix.filter(s => s.matchedSellerId !== null);
+            alert(`🎉 Success! ${matchedSlots.length} 11.11 Livestream slot bundles have been verified and submitted for platform subsidy co-funding.`);
+        }
+    </script>
+
+</body>
+</html>
